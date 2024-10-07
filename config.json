@@ -1,6 +1,8 @@
 {
     "models": {
         "wav2vec2ch": "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
-        "qwen2.50.5binstruct": "Qwen/Qwen2.5-0.5B-Instruct"
+        "qwen2.50.5binstruct": "Qwen/Qwen2.5-0.5B-Instruct",
+        "fishspeech1.4": "fishaudio/fish-speech-1.4",
+        "barksmall": "suno/bark-small"
     }
 }
