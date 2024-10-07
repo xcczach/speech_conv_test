@@ -10,9 +10,10 @@ class ASRModel(ABC):
         pass
 
 class Wave2Vec2Ch(ASRModel):
-    def __init__(self, model_path: str):
+    def __init__(self, model_path: str, device = "cuda"):
         self.processor = Wav2Vec2Processor.from_pretrained(model_path)
-        self.model = Wav2Vec2ForCTC.from_pretrained(model_path)
+        self.model = Wav2Vec2ForCTC.from_pretrained(model_path).to(device)
+        self.device = device
 
     def infer(self,speech_arrays: np.ndarray | list[np.ndarray], sampling_rate: int|float) -> str|list[str]:
         batch_op = True
@@ -23,7 +24,9 @@ class Wave2Vec2Ch(ASRModel):
         speech_arrays = [librosa.resample(speech_array, orig_sr=sampling_rate, target_sr=target_sampling_rate) for speech_array in speech_arrays]
         inputs = self.processor(speech_arrays, sampling_rate=target_sampling_rate, return_tensors="pt", padding=True)
         with torch.no_grad():
-            logits = self.model(inputs.input_values,attention_mask=inputs.attention_mask).logits
+            input_values = inputs.input_values.to(self.device)
+            attention_mask = inputs.attention_mask.to(self.device)
+            logits = self.model(input_values,attention_mask=attention_mask).logits
         predicted_ids = torch.argmax(logits, dim=-1)
         transcriptions = self.processor.batch_decode(predicted_ids)
         if batch_op:

@@ -8,9 +8,10 @@ class TTSModel(ABC):
         pass
 
 class Bark(TTSModel):
-    def __init__(self, model_path: str):
+    def __init__(self, model_path: str, device = "cuda"):
         self.processor = AutoProcessor.from_pretrained(model_path)
-        self.model = AutoModel.from_pretrained(model_path)
+        self.model = AutoModel.from_pretrained(model_path).to(device)
+        self.device = device
 
     def infer(self,texts: str|list[str]) -> tuple[np.ndarray|list[np.ndarray], int|float]:
         batch_op = True
@@ -23,6 +24,7 @@ class Bark(TTSModel):
                 text=[text],
                 return_tensors="pt",
             )
+            inputs = {name: tensor.to(self.device) for name, tensor in inputs.items()}
             speech_values = self.model.generate(**inputs, do_sample=True)
             result_speechs.append(speech_values.cpu().numpy().squeeze())
         sampling_rate = self.model.generation_config.sample_rate
