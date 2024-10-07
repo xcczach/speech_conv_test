@@ -14,7 +14,7 @@ class Wave2Vec2Ch(ASRModel):
         self.processor = Wav2Vec2Processor.from_pretrained(model_path)
         self.model = Wav2Vec2ForCTC.from_pretrained(model_path)
 
-    def infer(self,speech_arrays: np.ndarray | list[np.ndarray], sampling_rate: int|float) -> str:
+    def infer(self,speech_arrays: np.ndarray | list[np.ndarray], sampling_rate: int|float) -> str|list[str]:
         batch_op = True
         if isinstance(speech_arrays, np.ndarray):
             speech_arrays = [speech_arrays]

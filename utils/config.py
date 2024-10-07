@@ -3,7 +3,7 @@ import os
 from huggingface_hub import snapshot_download
 
 CKPT_DIR = "ckpts"
-def download_models(names: list[str]|None=None):
+def download_models(names: list[str]|None=None, token: str|None=None):
     with open('config.json', 'r') as f:
         config = json.load(f)
     models = config['models']
@@ -14,7 +14,7 @@ def download_models(names: list[str]|None=None):
         model_path = os.path.join(CKPT_DIR, name)
         os.makedirs(model_path, exist_ok=True)
         print(f"Downloading {name} from {path}")
-        snapshot_download(repo_id=path, local_dir=model_path)
+        snapshot_download(repo_id=path, local_dir=model_path, token=token)
 
 def list_models():
     model_dirs = os.listdir(CKPT_DIR)

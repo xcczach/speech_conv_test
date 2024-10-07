@@ -1,5 +1,6 @@
 {
     "models": {
-        "wav2vec2ch": "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn"
+        "wav2vec2ch": "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
+        "qwen2.50.5binstruct": "Qwen/Qwen2.5-0.5B-Instruct"
     }
 }
