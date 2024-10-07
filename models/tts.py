@@ -10,7 +10,8 @@ class TTSModel(ABC):
 class Bark(TTSModel):
     def __init__(self, model_path: str, device = "cuda"):
         self.processor = AutoProcessor.from_pretrained(model_path)
-        self.model = AutoModel.from_pretrained(model_path).to(device)
+        model = AutoModel.from_pretrained(model_path)
+        self.model = model.to_bettertransformer().to(device)
         self.device = device
 
     def infer(self,texts: str|list[str]) -> tuple[np.ndarray|list[np.ndarray], int|float]:
