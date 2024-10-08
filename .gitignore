@@ -166,4 +166,4 @@ ckpts/*
 
 # Test files
 disc/*
-test.py
+test*
